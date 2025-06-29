@@ -161,7 +161,13 @@ def check_card(card_line: str) -> str:
         headers=FINAL_HEADERS,
         data=final_data,
     )
-    return final_resp.json().get('message')
+    try:
+        result = final_resp.json().get('message')
+        if result is None:
+            result = final_resp.text
+    except ValueError:
+        result = final_resp.text
+    return result
 
 
 if __name__ == '__main__':
